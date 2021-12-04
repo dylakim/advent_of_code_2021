@@ -1,32 +1,41 @@
-const shared = require('../shared');
+const { splitLines, readFile, binaryToDecimal, findMostCommon, findLeastCommon } = require('../utils');
 
-const data = shared.splitLines(shared.readFile(__dirname));
+const data = splitLines(readFile(__dirname));
 
-const decodeArray = [];
-let gammaRateBinary = '';
-let epsilonRateBinary = '';
-
-data.forEach((line) => {
-    for (let i = 0; i < line.length; i++) {
-        const currBitArr = decodeArray[i];
-        if (!currBitArr) decodeArray.push([]);
-        const bit = line.charAt(i);
-        decodeArray[i].push(bit);
-    }
-});
-
-decodeArray.forEach((bitArr) => {
-    const numOfZeros = bitArr.reduce((acc, curr) => {
-        if (curr === '0') acc += 1;
-        return acc;
-    }, 0);
-
-    gammaRateBinary += (bitArr.length / 2) > numOfZeros ? 1 : 0;
-    epsilonRateBinary += (bitArr.length / 2) < numOfZeros ? 1 : 0;
-});
-
-const gammaRateDecimal = shared.convertBinaryToDecimal(gammaRateBinary);
-const epsilonRateDecimal = shared.convertBinaryToDecimal(epsilonRateBinary);
-
-const powerConsumption = gammaRateDecimal * epsilonRateDecimal;
+const decodeArray = getBitPositions(data);
+const { gammaRateBinary, epsilonRateBinary } = calculateRates(decodeArray);
+const powerConsumption = binaryToDecimal(gammaRateBinary) * binaryToDecimal(epsilonRateBinary);
 console.log(powerConsumption);
+
+function countBits (arr) {
+    return arr.reduce((acc, curr) => {
+        acc[parseInt(curr)] += 1;
+        return acc;
+    }, [0, 0]);
+}
+
+function getBitPositions (data) {
+    const arr = [];
+    data.forEach((line) => {
+        for (let i = 0; i < line.length; i++) {
+            if (!arr[i]) arr.push([]);
+            arr[i].push(line.charAt(i));
+        }
+    });
+    return arr;
+}
+
+function calculateRates (arr) {
+    const rates = {
+        gammaRateBinary: '',
+        epsilonRateBinary: '',
+    };
+
+    arr.forEach((bitArr) => {
+        const bitCounts = countBits(bitArr);
+        rates.gammaRateBinary += findMostCommon(bitCounts);
+        rates.epsilonRateBinary += findLeastCommon(bitCounts)
+    });
+
+    return rates;
+}

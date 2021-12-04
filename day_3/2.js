@@ -1,6 +1,6 @@
-const shared = require('../shared');
+const { splitLines, readFile, binaryToDecimal, findMostCommon, findLeastCommon } = require('../utils');
 
-const data = shared.splitLines(shared.readFile(__dirname));
+const data = splitLines(readFile(__dirname));
 
 const numOfBits = data[0].length;
 let oxygenGeneratorArray = data;
@@ -11,8 +11,8 @@ for (let i = 0; i < numOfBits; i++) {
     if (c02ScrubberArray.length !== 1) c02ScrubberArray = findRatingBinary('c02', i);
 }
 
-oxygenGenerator = shared.convertBinaryToDecimal(oxygenGeneratorArray);
-c02Scrubber = shared.convertBinaryToDecimal(c02ScrubberArray);
+oxygenGenerator = binaryToDecimal(oxygenGeneratorArray);
+c02Scrubber = binaryToDecimal(c02ScrubberArray);
 
 console.log(oxygenGenerator * c02Scrubber);
 
@@ -32,14 +32,4 @@ function countBits (arr) {
         acc[parseInt(curr)] += 1;
         return acc;
     }, [0, 0]);
-}
-
-function findMostCommon (x) {
-    if (x[0] === x[1]) return 1;
-    return x[0] > x[1] ? 0 : 1;
-}
-
-function findLeastCommon (x) {
-    if (x[0] === x[1]) return 0;
-    return x[0] < x[1] ? 0 : 1;
 }

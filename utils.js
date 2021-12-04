@@ -9,12 +9,22 @@ function splitLines (data) {
     return data.split(/\r?\n/);
 }
 
-function convertBinaryToDecimal(binary) {
+function binaryToDecimal(binary) {
     return parseInt(binary, 2);
+}
+
+function findMostCommon (x) {
+    return x[0] <= x[1] ? 1 : 0;
+}
+
+function findLeastCommon (x) {
+    return (x[0] === x[1]) ? 0 : (x[0] < x[1] ? 0 : 1);
 }
 
 module.exports = {
     readFile,
     splitLines,
-    convertBinaryToDecimal,
+    binaryToDecimal,
+    findMostCommon,
+    findLeastCommon,
 };

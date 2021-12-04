@@ -1,8 +1,12 @@
-const shared = require('../shared');
+const { splitLines, readFile } = require('../utils');
 
-const data = shared.splitLines(shared.readFile(__dirname));
+const data = splitLines(readFile(__dirname));
 
-const getThreeMeasWindow = (data) => {
+const answer = totalIncreases(getThreeMeasWindow(data));
+console.log(answer);
+
+
+function getThreeMeasWindow (data) {
     let newArr = [];
 
     for (let i = 0; i < (data.length - 2); i++) {
@@ -12,12 +16,6 @@ const getThreeMeasWindow = (data) => {
     return newArr;
 }
 
-const totalIncreases = (data) => {
-    return data.reduce((acc, curr, index, data) => {
-        return (index > 0 && ((data[index - 1] - curr) < 0)) ? acc + 1 : acc;
-    }, 0);
+function totalIncreases (data) {
+    return data.reduce((acc, curr, i, data) => ((i > 0 && ((data[i - 1] - curr) < 0)) ? acc + 1 : acc), 0);
 }
-
-const window = getThreeMeasWindow(data);
-const answer = totalIncreases(window);
-console.log(answer);

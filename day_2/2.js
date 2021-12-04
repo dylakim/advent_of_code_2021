@@ -1,32 +1,23 @@
-const shared = require('../shared');
+const { splitLines, readFile } = require('../utils');
 
-const data = shared.splitLines(shared.readFile(__dirname));
+const data = splitLines(readFile(__dirname));
 
 let horizPos = 0;
 let depth = 0;
 let aim = 0;
 
-function calculateDirection (step) {
-    splitStep = step.split(' ');
-    const direction = splitStep[0];
-    const x = parseInt(splitStep[1])
-    switch (direction) {
-        case 'forward':
-            horizPos += x;
-            if (aim) depth += aim * x;
-            break;
-        case 'up':
-            aim -= x;
-            break;
-        case 'down':
-            aim += x;
-            break;
-        default:
-            break;
-    }
-}
-
 data.forEach(calculateDirection);
 
 console.log('horiz: ', horizPos, 'depth: ', depth);
 console.log(horizPos * depth);
+
+function calculateDirection (step) {
+    [direction, units] = step.split(' ');
+    const number = parseInt(units);
+    if (direction === 'forward') {
+        horizPos += number;
+        if (aim) depth += aim * number;
+    }
+    if (direction === 'up') aim -= number;
+    if (direction === 'down') aim += number;
+}

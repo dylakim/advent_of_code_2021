@@ -1,10 +1,6 @@
-const shared = require('../shared');
+const { splitLines, readFile } = require('../utils');
 
-const data = shared.splitLines(shared.readFile(__dirname));
-
-const answer = data.reduce((reducer, curr, index, arr) => {
-    if (index > 0 && ((arr[index-1] - curr) < 0)) return reducer + 1;
-    return reducer;
-}, 0);
+const data = splitLines(readFile(__dirname));
+const answer = data.reduce((acc, curr, i, arr) => ((i > 0 && ((arr[i - 1] - curr) < 0)) ? acc + 1 : acc), 0);
 
 console.log(answer);
