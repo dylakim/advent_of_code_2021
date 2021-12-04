@@ -25,12 +25,8 @@ decodeArray.forEach((bitArr) => {
     epsilonRateBinary += (bitArr.length / 2) < numOfZeros ? 1 : 0;
 });
 
-const gammaRateDecimal = convertBinaryToDecimal(gammaRateBinary);
-const epsilonRateDecimal = convertBinaryToDecimal(epsilonRateBinary);
+const gammaRateDecimal = shared.convertBinaryToDecimal(gammaRateBinary);
+const epsilonRateDecimal = shared.convertBinaryToDecimal(epsilonRateBinary);
 
 const powerConsumption = gammaRateDecimal * epsilonRateDecimal;
 console.log(powerConsumption);
-
-function convertBinaryToDecimal(binary) {
-    return parseInt(binary, 2);
-}

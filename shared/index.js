@@ -9,7 +9,12 @@ function splitLines (data) {
     return data.split(/\r?\n/);
 }
 
+function convertBinaryToDecimal(binary) {
+    return parseInt(binary, 2);
+}
+
 module.exports = {
     readFile,
     splitLines,
+    convertBinaryToDecimal,
 };
